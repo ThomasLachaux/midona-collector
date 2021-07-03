@@ -41,15 +41,25 @@ def collect():
   token = connect()
   json_data = retreive_data(token)
 
-  count = 0
-  download = 0
-  upload = 0
+  tags = {}
 
-  for torrent_id, torrent in json_data.items():
-    upload += torrent['upTotal']
-    download += torrent['bytesDone']
-    count += 1
+  for torrent in json_data.values():
+    tags_list = torrent['tags']
 
-  print(count)
-  print(upload / 1024 ** 3)
-  print(download / 1024 ** 3)
+    # Set the tag to untagged as default
+    tag = 'untagged'
+    # If a tag exists, use first
+    if len(tags_list) > 0:
+      tag = tags_list[0]
+
+    # Create the key tags if it does not exists
+    tags.setdefault(tag, {'count': 0, 'download': 0, 'upload': 0})
+
+    tags[tag]['count'] += 1
+    tags[tag]['upload'] += torrent['upTotal']
+    tags[tag]['download'] += torrent['bytesDone']
+
+  for tag, torrent in tags.items():
+    yield f'flood,tracker={tag} count={torrent["count"]}'
+    yield f'flood,tracker={tag} upload={torrent["upload"]}'
+    yield f'flood,tracker={tag} download={torrent["download"]}'
