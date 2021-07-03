@@ -17,11 +17,11 @@ def collect():
     musics = [m for m in listdir(absolute_path) if m.endswith('.mp3')]
 
     # Compute count
-    yield f'youtube,playlist={playlist} count={len(musics)}'
+    yield f'music,playlist={playlist} count={len(musics)}'
 
     # Compute duration
     duration = 0
     for music in [path.join(absolute_path, m) for m in musics]:
       audio = MP3(music)
       duration += audio.info.length
-    yield f'youtube,playlist={playlist} duration={duration}'
+    yield f'music,playlist={playlist} duration={duration}'
