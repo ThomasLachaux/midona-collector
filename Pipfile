@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 influxdb-client = "*"
-python-dotenv = "*"
 mutagen = "*"
 requests = "*"
 

@@ -1,6 +1,3 @@
-from dotenv import load_dotenv
-load_dotenv()
-
 import pkgutil
 import collectors
 import logging as logger
@@ -19,5 +16,5 @@ for importer, module_name, ispkg in pkgutil.iter_modules(collectors.__path__, f'
   collector = __import__(module_name, fromlist=[None])
 
   for data in collector.collect():
-    logger.debug(data)
     api.write(environ.get("INFLUXDB_BUCKET"), environ.get("INFLUXDB_ORG"), data)
+    logger.debug(data)
