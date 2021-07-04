@@ -59,7 +59,18 @@ def collect():
     tags[tag]['upload'] += torrent['upTotal']
     tags[tag]['download'] += torrent['bytesDone']
 
+
+  total = {'count': 0, 'upload': 0, 'download': 0}
   for tag, torrent in tags.items():
-    yield f'flood,tracker={tag} count={torrent["count"]}'
-    yield f'flood,tracker={tag} upload={torrent["upload"]}'
-    yield f'flood,tracker={tag} download={torrent["download"]}'
+    total['count'] += torrent['count']
+    yield f'flood,tag={tag} count={torrent["count"]}'
+
+    total['upload'] += torrent['upload']
+    yield f'flood,tag={tag} upload={torrent["upload"]}'
+
+    total['download'] += torrent['download']
+    yield f'flood,tag={tag} download={torrent["download"]}'
+
+  yield f'flood,tag=total count={total["count"]}' 
+  yield f'flood,tag=total upload={total["upload"]}' 
+  yield f'flood,tag=total download={total["download"]}' 
