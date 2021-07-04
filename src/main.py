@@ -1,5 +1,5 @@
 import logging as logger
-logger.basicConfig(format='%(asctime)s %(levelname)s %(module)s %(message)s', level=logger.DEBUG)
+logger.basicConfig(format='%(levelname)s %(module)s %(message)s', level=logger.DEBUG)
 
 import pkgutil
 import collectors
