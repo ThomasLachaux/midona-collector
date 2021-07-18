@@ -15,7 +15,7 @@ def collect():
     if not snapshot:
       scope = "repository"
 
-    yield f'backup,mode=raw_data,scope={scope} total_size={raw_data["total_size"]}'
+    yield f'backup,mode=raw_data,scope={scope} total_size={raw_data["total_size"]}u'
 
-    yield f'backup,mode=restore_size,scope={scope} total_size={restore_size["total_size"]}'
-    yield f'backup,mode=restore_size,scope={scope} total_file_count={restore_size["total_file_count"]}'
+    yield f'backup,mode=restore_size,scope={scope} total_size={restore_size["total_size"]}u'
+    yield f'backup,mode=restore_size,scope={scope} total_file_count={restore_size["total_file_count"]}u'

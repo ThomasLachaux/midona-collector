@@ -1,8 +1,15 @@
-from os import environ
+from os import environ, replace
 import requests
 import json
+from re import sub
+import unicodedata
 
 base_url = environ.get('FLOOD_API_URL')
+
+
+def strip_accents(s):
+   return ''.join(c for c in unicodedata.normalize('NFD', s)
+                  if unicodedata.category(c) != 'Mn')
 
 def connect():
   username = environ.get('FLOOD_USERNAME')
@@ -41,8 +48,6 @@ def collect():
   token = connect()
   json_data = retreive_data(token)
 
-  tags = {}
-
   for torrent in json_data.values():
     tags_list = torrent['tags']
 
@@ -52,25 +57,26 @@ def collect():
     if len(tags_list) > 0:
       tag = tags_list[0]
 
-    # Create the key tags if it does not exists
-    tags.setdefault(tag, {'count': 0, 'download': 0, 'upload': 0})
+    name = torrent['name'].lower() # To lowercase
+    name = sub('\([^\)]*\)', '', name) # Remove the ()
+    name = sub('\[[^\]]*\]', '', name) # Remove the []
+    name = sub('\..{,3}$', '', name) # Remove the extension
+    name = sub('(.26[4-5]|\d{3,4}p|webr?i?p?|multi|vostf?r?|\d+bits?|-[^ ]+$)|s?u?b?french|blueray|-[^-]+$|', '', name) # Remove common words
+    name = sub('[\.\+_]', ' ', name) # Replace the . or + by a dash
+    name = sub(' +', ' ', name) # Replace multiple spaces to one
+    name = strip_accents(name)
+    name = name.strip()
+    name = name.replace(' ', '-')
+    name = sub('-+', '-', name)
+    name = json.dumps(name)
+    upload = torrent['upTotal']
+    download = torrent['bytesDone']
+    added = torrent['dateAdded']
 
-    tags[tag]['count'] += 1
-    tags[tag]['upload'] += torrent['upTotal']
-    tags[tag]['download'] += torrent['bytesDone']
+
+    yield f'flood,tag={tag},name={name} upload={upload}u,download={download}u,added={added}u'
 
 
-  total = {'count': 0, 'upload': 0, 'download': 0}
-  for tag, torrent in tags.items():
-    total['count'] += torrent['count']
-    yield f'flood,tag={tag} count={torrent["count"]}'
-
-    total['upload'] += torrent['upload']
-    yield f'flood,tag={tag} upload={torrent["upload"]}'
-
-    total['download'] += torrent['download']
-    yield f'flood,tag={tag} download={torrent["download"]}'
-
-  yield f'flood,tag=total count={total["count"]}' 
-  yield f'flood,tag=total upload={total["upload"]}' 
-  yield f'flood,tag=total download={total["download"]}' 
+if __name__ == '__main__':
+  for i in collect():
+    print(i)

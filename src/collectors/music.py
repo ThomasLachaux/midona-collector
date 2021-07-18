@@ -21,7 +21,7 @@ def collect():
     # Compute count
     count = len(musics)
     total['count'] += count
-    yield f'music,playlist={playlist} count={count}'
+    yield f'music,playlist={playlist} count={count}u'
 
     # Compute duration
     duration = 0
@@ -31,6 +31,3 @@ def collect():
 
     total['duration'] += duration
     yield f'music,playlist={playlist} duration={duration}'
-
-  yield f'music,playlist=total count={total["count"]}'
-  yield f'music,playlist=total duration={total["duration"]}'
