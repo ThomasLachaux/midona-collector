@@ -23,7 +23,4 @@ with InfluxDBClient(url=environ.get("INFLUXDB_URL"), token=environ.get("INFLUXDB
       collector = __import__(f'collectors.{collector_name}', fromlist=[None])
       api.write(bucket, org, list(collector.collect()))
 
-
-
-
 healthcheck.stop()

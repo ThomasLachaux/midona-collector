@@ -72,9 +72,9 @@ def collect():
     upload = torrent['upTotal']
     download = torrent['bytesDone']
     added = torrent['dateAdded']
-    size = torrent['sizeBytes']
 
-    yield f'flood,tag={tag},name={name} upload={upload}u,download={download}u,added={added}u,size={size}u'
+
+    yield f'flood,tag={tag},name={name} upload={upload}u,download={download}u,added={added}u'
 
 
 if __name__ == '__main__':
