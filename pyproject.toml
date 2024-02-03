@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "midona-collector"
+version = "0.1.0"
+description = ""
+authors = ["Thomas de Lachaux <thomas.delachaux@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+influxdb-client = "^1.28.0"
+mutagen = "^1.45.1"
+requests = "^2.27.1"
+boto3 = "^1.21.46"
+loguru = "^0.6.0"
+python-dotenv = "^0.20.0"
+beautifulsoup4 = "^4.11.1"
+qbittorrent-api = "^2022.5.32"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

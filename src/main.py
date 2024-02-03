@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from influxdb_client.client.write_api import SYNCHRONOUS
 from loguru import logger
 from os import environ
