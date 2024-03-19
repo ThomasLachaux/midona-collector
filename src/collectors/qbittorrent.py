@@ -33,7 +33,7 @@ def collect():
         for banned in (r'HDR', r'.26[45]', r'webr?i?p?', r'multi', r'vostf?r?', r'\d+bits?', r's?u?b?french', r'bluray', r' aac ', r'ac3', r'5[ \.-]1', r'hdlight', r'1080.?', r'720.?', r'vff', r'bdrip'):
             name = sub(banned, "", name)
 
-        
+
         name = sub(" +", " ", name)  # Replace multiple spaces to one
         name = strip_accents(name)
         name = name.strip()
@@ -48,6 +48,7 @@ def collect():
         size = torrent["size"]
 
         yield f"qbittorrent,category={category},name={name} uploaded={uploaded}u,downloaded={downloaded}u,added={added}u,ratio={ratio},size={size}u"
+    qbt_client.auth_log_out()
 
 if __name__ == "__main__":
     for i in collect():

@@ -9,6 +9,7 @@ mutagen = "*"
 requests = "*"
 boto3 = "*"
 loguru = "*"
+qbittorrent-api = "*"
 
 [dev-packages]
 
